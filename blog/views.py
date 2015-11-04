@@ -4,6 +4,9 @@ from blog import app
 from .database import session
 from .models import Post
 
+import mistune
+from flask import request, redirect, url_for
+
 @app.route("/")
 @app.route("/page/<int:page>")
 def posts(page=1, paginate_by=10):
@@ -35,8 +38,6 @@ def posts(page=1, paginate_by=10):
 def add_post_get():
     return render_template("add_post.html")
     
-import mistune
-from flask import request, redirect, url_for
 
 @app.route("/post/add", methods=["POST"])
 def add_post_post():
@@ -46,7 +47,7 @@ def add_post_post():
     )
     session.add(post)
     session.commit()
-    return redirect(url_for("posts"))
+    return redirect (url_for("posts"))
     
 @app.route("/post/<int:id>")
 def single_view(id): 
@@ -54,3 +55,49 @@ def single_view(id):
     return render_template("post.html",
         post=post)
         
+@app.route("/post/<int:id>/edit", methods=["GET"])
+def edit_post_get(id):
+    post=session.query(Post).get(id)
+    return render_template("edit_post.html", post=post)
+    
+
+@app.route("/post/<int:id>/edit", methods=["POST"])
+def edit_post_post():
+    """
+    post = Post(
+        id=id,
+        title=request.form["title"],
+        content=mistune.markdown(request.form["content"]),
+    )
+    session.add(post)
+    """
+    session.commit()
+    return redirect(url_for("posts"))
+    
+
+@app.route("/post/<int:id>/delete", methods=["GET"])
+def delete_post_get(id):
+    post=session.query(Post).get(id)
+    title=post.title 
+    return render_template("delete_post.html", title=title)
+    
+
+@app.route("/post/<int:id>/delete", methods=["POST"])
+def delete_post_post(id):
+    if request.form["dual"]=="Yes":
+        post=session.query(Post).get(id)
+        session.delete(post)
+        session.commit()
+        return redirect("/")
+    if request.form["dual"]=="No":    
+        return redirect("/")
+#    """
+#    post = Post(
+#        id=id,
+#      title=request.form["title"],
+#       content=mistune.markdown(request.form["content"]),
+#    )
+#    session.add(post)
+#    """
+#    session.commit()
+#    return redirect(url_for("posts"))

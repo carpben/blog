@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>
+    Delete Post"{{title}}"? 
+</h1>
+
+<form role="form" method="POST">
+    <button type="submit" class="btn btn-default" name="dual" value="Yes">Yes</button>
+    <button type="submit" class="btn btn-default" name="dual" value="No">No</button>
+</form>
+{% endblock %}
