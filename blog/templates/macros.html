@@ -1,10 +1,13 @@
-{% macro render_post(post) %}
+{% macro render_post(post, current_user) %}
 <div class="row">
     <div class="col-md-2 text-right metadata">
         <ul class="list-unstyled">
             <li>{{ post.datetime | dateformat("%d/%m/%y") }}</li>
-            <li><a href="/post/{{post.id}}/edit"><h5>Edit</h5></li>
-            <li><a href="/post/{{post.id}}/delete"><h5>Delete</h5></li>
+            <li>{{ post.author.name }}</li>
+            {% if (current_user.is_authenticated) and (current_user.name==post.author.name)%} 
+            <li><a href="/post/{{post.id}}/edit"><h5>Edit</h5></a></li>
+            <li><a href="/post/{{post.id}}/delete"><h5>Delete</h5></a></li>
+            {% endif %}
         </ul>
     </div>
     <div class="col-md-10">
