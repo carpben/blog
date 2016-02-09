@@ -44,18 +44,6 @@ class TestViews(unittest.TestCase):
         Base.metadata.drop_all(engine)
         self.browser.quit()
     
-    """    
-    def test_1_login_correct(self):
-        self.browser.visit("http://127.0.0.1:8080/login")
-        self.browser.fill("email", "alice@example.com")
-        self.browser.fill("password", "test")
-        button = self.browser.find_by_css("button[type=submit]")
-        print ("element.value = ", button.value)
-        button.click()
-        print ("element.value = ", self.browser.url)
-        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
-    """
-    
     def test_2_add_post (self):
         self.browser.visit("http://127.0.0.1:8080")
         print ("current url = ", self.browser.url)
